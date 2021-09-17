@@ -111,7 +111,7 @@ Below is the main playbook "main.yml" I have written to complete this task. Ther
     
     - name: "Cloning the Git Repository"
       git:
-        repo: repo: "{{ git_repository }}"
+        repo: "{{ git_repository }}"
         dest: "{{ clone_path }}"
       register: clonestat
 
