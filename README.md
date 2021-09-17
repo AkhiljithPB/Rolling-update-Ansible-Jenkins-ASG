@@ -1,6 +1,21 @@
-# Rolling update::AutoScalingGroup::Ansible::Jenkins
-## Description
-###### Here, we will look into my small project to configure continues integration for a website on an existing Autoscaling group under an Elastic Load Balancer using ansible playbook  by cloning Git repository and manages the rolling update through Jenkins. I have configured the Webhook feature to alert the ansible for initiating the update.  
+# Rolling updates for AWS AutoScaling Groups using Ansible Playbook and jenkins!
+
+ ASG's let you declare a configuration, a minimum and maximum number of ec2 nodes, a desired number, and it keeps that number going for you. It even lets you set it up to scale up or down automatically based on cloudwatch events, effectively adjusting the desired number of nodes in the ASG, in response to load.
+
+##### The challenge is: how do you update it?
+
+If you change the launch configuration or launch template, it does not cause new nodes to be rolled in. Even if it did, you would want them to roll in sanely and slowly, one at a time, rather than all at once.
+
+Here, [Anisble][1] does a decent job, with a little extra work,
+
+1. Clone the latest files to a Git-Cloned directory.
+1. Offloads the instances one by one.
+2. Copies the updated files from Git-Cloned directory to document_root.
+3. Activate the Offloaded instance after completing copy from Git-Cloned directory.
+
+[1]: https://www.ansible.com/
+
+In here will be looking into my small project to configure continues integration for a website on an existing Autoscaling group under an Elastic Load Balancer using ansible playbook  by cloning Git repository and manages the rolling update through Jenkins. I have configured the Webhook feature to alert the ansible for initiating the update.  
 
 ## Features
 
@@ -13,6 +28,7 @@
 ## Prerequisites
 - Ansible.
 - IAM user with required previleges.
+      _NB: IAM role should be attached to the Ansible Master_
 - Basic knowledge in Autoscaling group and Ansible-playbook.
 
 To install ansible:
