@@ -41,8 +41,8 @@ Below is the main playbook "main.yml" I have written to complete this task. Ther
   hosts: localhost
 
   vars:
-    access: "AKIAYH3S7Q5XJQTWBGH2"
-    secret: "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"
+    access: ""
+    secret: ""
     region: "ap-south-1"
     ansible_python_interpreter: /usr/bin/python3
   tasks:
