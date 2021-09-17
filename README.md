@@ -111,7 +111,7 @@ Below is the main playbook "main.yml" I have written to complete this task. Ther
     
     - name: "Cloning the Git Repository"
       git:
-        repo: https://github.com/AkhiljithPB/techcafe-web-dev.git
+        repo: repo: "{{ git_repository }}"
         dest: "{{ clone_path }}"
       register: clonestat
 
@@ -161,7 +161,7 @@ region: "ap-south-1"
 tag_name: "asg-01"
 private_key: "ansible.pem"
 health_check_time: 15
-gitRepository: "https://github.com/AkhiljithPB/techcafe-web-dev.git"
+git_repository: "https://github.com/AkhiljithPB/techcafe-web-dev.git"
 clone_path: /usr/local/src/git/
 ```
 📃  Userdata for launch configuration
