@@ -36,7 +36,107 @@ To install ansible:
 Below is the main playbook "main.yml" I have written to complete this task. There is also two more files one consists of required variables "rolling.vars" and another one have the userdata which I have used to configure the launch configuration. 
 
 ```sh
+---
+- name: "ASG rolling update"
+  hosts: localhost
+  vars_files:
+    - rolling.vars
+  tasks:
+  
+    - name: "PIP Installation"
+      yum:
+        name: pip
+        state: present
+    
+    - name: "boto3 Installation"
+      pip:
+        name: boto3
+        state: present
+    
+    - name: "Gathering EC2 ASG Informations"
+      ec2_instance_info:
+        region: "{{ region }}"
+        filters: 
+          "tag:aws:autoscaling:groupName": "{{ tag_name }}"
+          instance-state-name: ["running"]
+      register: asg_instances
+    
+    - name: "Dynamic Inventory For ASG Instances"
+      add_host: 
+        name: "{{ item.public_ip_address }}"
+        groups: "ansible-asg"
+        ansible_host: "{{ item.public_ip_address }}" 
+        ansible_port: 22
+        ansible_user: "ec2-user"
+        ansible_ssh_private_key_file: "{{ private_key }}"
+        ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+      with_items:
+        - "{{ asg_instances.instances }}"
+    
+- name: "Website Deploying from Git-repo to ASG Instances"
+  become: true
+  hosts: ansible-asg
+  gather_facts: false
+  serial: 1
+  vars_files:
+    - rolling.vars
+  tasks:
+    - name: "httpd$git Installation"
+      yum:
+        name: 
+          - httpd
+          - git
+        state: latest
+    
+    - name: "Creating the Clone Directory"
+      file:
+        path: "{{ clone_path }}"
+        state: directory
+    
+    - name: "Cloning the Git Repository"
+      git:
+        repo: https://github.com/AkhiljithPB/techcafe-web-dev.git
+        dest: "{{ clone_path }}"
+      register: clonestat
 
+    - name: "Health Check Disable"
+      when: clonestat.changed
+      file:
+        path: /var/www/html/health.txt
+        state: file
+        mode: 000
+    
+    - name: "Ec2 Instance offload(OutofService)"
+      when: clonestat.changed
+      pause: 
+        seconds: "{{ health_check_time }}"
+
+    - name: "Copying Cloned contents to Document_root of instances"
+      when: clonestat.changed
+      copy:
+        src: "{{ clone_path }}"
+        dest: /var/www/html/
+        remote_src: true
+    
+    - name: "httpd Restart/Enable"
+      when: clonestat.changed
+      service:
+        name: httpd
+        state: restarted
+        enabled: true
+    
+    - name: "Health Check Enable"
+      when: clonestat.changed
+      file:
+        path: /var/www/html/health.txt
+        state: file
+        mode: 0644
+
+    - name: "Returning Ec2 instance to Inservice"
+      when: clonestat.changed
+      pause:
+        seconds: "{{ health_check_time }}"
+        prompt: "The instance will be back in a moment"
 ```
 ```sh
 #vim rolling.vars
