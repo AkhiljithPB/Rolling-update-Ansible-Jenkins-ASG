@@ -194,7 +194,7 @@ Then update build procedure from Build Environment to invoke the ansible-playboo
 ![image text](https://github.com/AkhiljithPB/Rolling-update-Ansible-Jenkins-ASG/blob/694ffefc85158210feb113ce870f752b137c8160/webhooks.png "image Title")
 
 > Update the Jenkins configuration as such to trigger when GitHub pushes.
-![image text](https://github.com/AkhiljithPB/Rolling-update-Ansible-Jenkins-ASG/blob/694ffefc85158210feb113ce870f752b137c8160/trigger.png "image Title")
+![image text](https://github.com/AkhiljithPB/Rolling-update-Ansible-Jenkins-ASG/blob/0975f1813832081bad99900d370fadf5873524fb/jenkins%20trigger.png "image Title")
 
 
 ### Setup now finished. 👼
