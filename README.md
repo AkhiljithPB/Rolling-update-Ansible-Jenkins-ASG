@@ -35,7 +35,7 @@ To install ansible:
 > https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 
 ## Architecture
-![image text](https://github.com/AkhiljithPB/Rolling-update-Ansible-Jenkins-ASG/blob/694ffefc85158210feb113ce870f752b137c8160/rolling.jpg "image Title")
+![image text](https://github.com/AkhiljithPB/Rolling-update-Ansible-Jenkins-ASG/blob/694ffefc85158210feb113ce870f752b137c8160/Architecute.drawio.png "image Title")
 ## Required Modules in Ansible.
 - yum
 - pip
