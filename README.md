@@ -23,7 +23,7 @@ In here will be looking into my small project to configure continues integration
 - Dynamic hosts inventory using ansible module "add_host"
 - Seperate file for LoadBalancer health check.
 - Customizable variables for IAM accesss&secrete keys, region,domain-name, document-root etc.
-
+- No need to provide IAM credentials on playbook since already configured it in the ansible master node
 
 ## Prerequisites
 - Ansible.
